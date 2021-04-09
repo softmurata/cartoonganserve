@@ -163,7 +163,7 @@ class ModelHandler(BaseHandler):
         output_image = output_image.data.cpu().float() * 0.5 + 0.5
         # convert results into json format
         # file_name = "/home/ubuntu/murata/Server/cartoonganserve/serve/image_dir/{}".format(self.image_filename)
-        file_name = "/home/ubuntu/murata/Media2Cloud/Server/cartoonganserve/serve/examples/image_dir/{}".format(self.image_filename)
+        file_name = "/home/ubuntu/murata/Media2Cloud/Server/cartoonganserve/serve/image_dir/{}".format(self.image_filename)
         save_image(output_image, file_name)
 
         
