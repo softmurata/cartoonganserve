@@ -69,7 +69,8 @@ class ModelHandler(BaseHandler):
         self.manifest = context.manifest
 
         # load model
-        model_pt_path = "/home/ubuntu/murata/Server/cartoonganserve/serve/examples/cartoongan/pretrained_model/{}_net_G_float.pth".format(self.style)  # generator weight
+        # model_pt_path = "/home/ubuntu/murata/Server/cartoonganserve/serve/examples/cartoongan/pretrained_model/{}_net_G_float.pth".format(self.style)  # generator weight
+        model_pt_path = "/home/ubuntu/murata/Media2Cloud/Server/cartoonganserve/serve/examples/cartoonganserve/pretrained_model/{}_net_G_float.pth".format(self.style)
         self.model = CartoonGAN()
         self.model.load_state_dict(torch.load(model_pt_path, map_location=self.map_location))
         self.model.to(self.device)
@@ -161,12 +162,16 @@ class ModelHandler(BaseHandler):
         output_image = output_image[[2, 1, 0], :, :]
         output_image = output_image.data.cpu().float() * 0.5 + 0.5
         # convert results into json format
-        file_name = "/home/ubuntu/murata/Server/cartoonganserve/serve/image_dir/{}".format(self.image_filename)
+        # file_name = "/home/ubuntu/murata/Server/cartoonganserve/serve/image_dir/{}".format(self.image_filename)
+        file_name = "/home/ubuntu/murata/Media2Cloud/Server/cartoonganserve/serve/examples/image_dir/{}".format(self.image_filename)
         save_image(output_image, file_name)
 
         
         # s3 upload
-        json_format = self.upload_file(file_name, self.bucket, object_name=None)
+        # json_format = self.upload_file(file_name, self.bucket, object_name=None)
+        url = "https://{}.s3.amazonaws.com/{}".format(self.bucket, self.image_filename)
+        json_format = {"url": url}
+        json_format = json.dumps(json_format)
 
         return json_format
 
